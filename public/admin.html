@@ -5,39 +5,40 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hog & Mug | Orders</title>
 <style>
-  :root { --pink:#f7a8b8; --pink-dark:#e07a93; --brown:#5a3825; --cream:#fff8f0; --line:#f0e2d6; --muted:#7a6a60; }
+  :root { --orange:#ed641c; --orange-dark:#7a310d; --orange-muted:#a94c1d; --page:#fff8e8; --line:#f0dfbd; --muted:#78634c; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: "Segoe UI", system-ui, sans-serif; background: var(--cream); color: #2e2019; }
-  header { background: var(--brown); color: #fff; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+  body { font-family: "Segoe UI", system-ui, sans-serif; background: var(--page); color: #382719; }
+  header { background: var(--orange-dark); color: #fff; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
   header h1 { font-size: 1.25rem; }
   .controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
   select, input, button { font: inherit; padding: 8px 12px; border-radius: 8px; border: 2px solid var(--line); }
-  button { background: var(--pink-dark); color: #fff; border: none; font-weight: 700; cursor: pointer; }
+  select:focus, input:focus { outline: none; border-color: var(--orange); }
+  button { background: var(--orange); color: #fff; border: none; font-weight: 700; cursor: pointer; }
   main { max-width: 1000px; margin: 24px auto; padding: 0 16px; }
-  .login { max-width: 360px; margin: 80px auto; background: #fff; padding: 28px; border-radius: 16px; box-shadow: 0 6px 20px rgba(90,56,37,.1); }
-  .login h2 { color: var(--brown); margin-bottom: 12px; }
+  .login { max-width: 360px; margin: 80px auto; background: #fff; padding: 28px; border-radius: 16px; box-shadow: 0 6px 20px rgba(122,49,13,.12); }
+  .login h2 { color: var(--orange-dark); margin-bottom: 12px; }
   .login input { width: 100%; margin-bottom: 12px; }
   .login button { width: 100%; }
   .stats { display: flex; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
-  .stat { background: #fff; border-radius: 12px; padding: 12px 18px; box-shadow: 0 2px 8px rgba(90,56,37,.08); }
-  .stat strong { display: block; font-size: 1.3rem; color: var(--brown); }
+  .stat { background: #fff; border-radius: 12px; padding: 12px 18px; box-shadow: 0 2px 8px rgba(122,49,13,.08); }
+  .stat strong { display: block; font-size: 1.3rem; color: var(--orange-dark); }
   .stat span { color: var(--muted); font-size: .85rem; }
-  .order { background: #fff; border-radius: 14px; padding: 18px; margin-bottom: 14px; box-shadow: 0 2px 8px rgba(90,56,37,.08); border-left: 6px solid var(--pink); }
-  .order.completed, .order.cancelled { opacity: .6; border-left-color: #cbbbb0; }
+  .order { background: #fff; border-radius: 14px; padding: 18px; margin-bottom: 14px; box-shadow: 0 2px 8px rgba(122,49,13,.08); border-left: 6px solid var(--orange); }
+  .order.completed, .order.cancelled { opacity: .6; border-left-color: #d7caad; }
   .top { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
-  .top h3 { color: var(--brown); }
+  .top h3 { color: var(--orange-dark); }
   .meta { color: var(--muted); font-size: .9rem; }
   ul { margin: 10px 0 10px 18px; }
-  .total { font-weight: 800; color: var(--pink-dark); }
+  .total { font-weight: 800; color: var(--orange); }
   .empty { text-align: center; color: var(--muted); padding: 40px 0; }
   .err { color: #b3261e; margin-bottom: 10px; }
   .tabs { display: flex; gap: 6px; }
   .tabs button { background: transparent; border: 2px solid rgba(255,255,255,.4); }
-  .tabs button.active { background: #fff; color: var(--brown); border-color: #fff; }
+  .tabs button.active { background: #fff; color: var(--orange-dark); border-color: #fff; }
   .search { width: 100%; margin-bottom: 14px; background: #fff; }
-  table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 8px rgba(90,56,37,.08); }
+  table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 8px rgba(122,49,13,.08); }
   th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line); font-size: .92rem; vertical-align: top; }
-  th { background: #fbf1e8; color: var(--brown); font-size: .8rem; text-transform: uppercase; letter-spacing: .03em; }
+  th { background: #edf5c9; color: var(--orange-dark); font-size: .8rem; text-transform: uppercase; letter-spacing: .03em; }
   tr.off td { opacity: .55; }
   td small { color: var(--muted); display: block; }
   .tag { font-size: .75rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; }
