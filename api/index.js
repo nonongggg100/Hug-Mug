@@ -11,7 +11,7 @@ module.exports = async (req, res) => {
       res.statusCode = 500;
       res.setHeader("Content-Type", "application/json; charset=utf-8");
       return res.end(JSON.stringify({
-        error: "Database not connected. In Vercel, open your project → Storage → add Upstash Redis, connect it to this project, then redeploy.",
+        error: "Database not connected. Connect a Redis database to this Vercel project and enable its credentials for Production, then redeploy.",
       }));
     }
     handler = createHandler(store);

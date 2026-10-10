@@ -80,7 +80,7 @@ Edit the constants at the top of `lib/app.js`:
 
 ## Deploy to Vercel
 
-Vercel can't keep files between requests, so on Vercel the orders and accounts are stored in **Upstash Redis** (free tier available) instead of `data/db.json`. The app switches automatically when the database is connected. Locally, `node server.js` keeps using the JSON file.
+Vercel can't keep files between requests, so on Vercel the orders and accounts are stored in Redis instead of `data/db.json`. The app supports Upstash REST credentials and Vercel Redis's `REDIS_URL`. Locally, `node server.js` keeps using the JSON file.
 
 ### 1. Put the code on GitHub
 
@@ -98,9 +98,8 @@ In VS Code: open the `hog-and-mug` folder → **Source Control** (left sidebar) 
 
 ### 3. Add the database
 
-1. In the project, open the **Storage** tab → **Create Database** → **Upstash for Redis** (from the Marketplace).
-2. Pick the free plan and a region close to your customers (e.g. Singapore), then **Connect** it to this project for all environments.
-   This adds `KV_REST_API_URL` and `KV_REST_API_TOKEN` automatically.
+1. In the project, open the **Storage** tab and create or connect a Redis database.
+2. Connect it to this project for the **Production** environment. Vercel Redis provides `REDIS_URL`; Upstash REST connections provide `KV_REST_API_URL` and `KV_REST_API_TOKEN`.
 3. Go to **Deployments**, open the **⋯** menu on the latest one → **Redeploy**.
 
 ### 4. Check it works
@@ -127,10 +126,10 @@ Then do step 3 (database) and add `ADMIN_KEY` in the dashboard, and run `vercel 
 | Variable | Where | Purpose |
 |---|---|---|
 | `ADMIN_KEY` | Vercel → Settings → Environment Variables | Admin page password, 12+ characters. Admin is disabled without it. |
-| `KV_REST_API_URL`, `KV_REST_API_TOKEN` | Added automatically by the Upstash integration | Database connection |
+| `REDIS_URL` | Added by Vercel Redis when connected to the project | Redis database connection |
+| `KV_REST_API_URL`, `KV_REST_API_TOKEN` | Added by an Upstash REST integration | Redis database connection |
 
-To test locally against the same Redis database, copy those two values and run
-`KV_REST_API_URL=... KV_REST_API_TOKEN=... ADMIN_KEY=... node server.js`.
+To test locally against the same Redis database, set its `REDIS_URL` (or both Upstash REST variables) and `ADMIN_KEY`, then run `node server.js`.
 
 ### How it works on Vercel
 
