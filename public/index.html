@@ -250,34 +250,15 @@
 </head>
 <body>
 
-<!-- Logo: pig holding a hot cup (reusable SVG symbol) -->
+<!-- Logo image (reusable SVG symbol) -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="logo" viewBox="0 0 126 120">
-    <!-- steam -->
-    <path d="M84 40c-4-5 4-8 0-14M93 40c-4-5 4-8 0-14M102 40c-4-5 4-8 0-14" fill="none" stroke="#b9a090" stroke-width="3" stroke-linecap="round"/>
-    <!-- ears -->
-    <path d="M26 34 L22 12 L42 26 Z" fill="#ef8aa2"/>
-    <path d="M66 26 L84 14 L78 36 Z" fill="#ef8aa2"/>
-    <!-- head -->
-    <circle cx="52" cy="58" r="34" fill="#f7a8b8"/>
-    <!-- cheeks -->
-    <circle cx="30" cy="70" r="6" fill="#f48aa1" opacity=".55"/>
-    <!-- eyes -->
-    <circle cx="40" cy="50" r="4.5" fill="#2e2019"/>
-    <circle cx="62" cy="50" r="4.5" fill="#2e2019"/>
-    <circle cx="41.5" cy="48.5" r="1.4" fill="#fff"/>
-    <circle cx="63.5" cy="48.5" r="1.4" fill="#fff"/>
-    <!-- snout -->
-    <ellipse cx="51" cy="68" rx="14" ry="10" fill="#ef8aa2"/>
-    <ellipse cx="46" cy="68" rx="2.6" ry="3.6" fill="#a8455d"/>
-    <ellipse cx="56" cy="68" rx="2.6" ry="3.6" fill="#a8455d"/>
-    <!-- cup -->
-    <path d="M110 70 q10 0 10 10 q0 10 -10 10" fill="none" stroke="#5a3825" stroke-width="5"/>
-    <path d="M76 46 h36 l-4 50 q-1 6 -7 6 h-14 q-6 0 -7 -6 Z" fill="#5a3825"/>
-    <rect x="74" y="42" width="40" height="7" rx="3.5" fill="#8a5a3c"/>
-    <path d="M82 66 h24" stroke="#f7a8b8" stroke-width="4" stroke-linecap="round"/>
-    <!-- hoof holding cup -->
-    <ellipse cx="78" cy="80" rx="9" ry="7" fill="#f7a8b8" stroke="#ef8aa2" stroke-width="2"/>
+    <defs>
+      <clipPath id="logo-circle">
+        <circle cx="63" cy="60" r="60"/>
+      </clipPath>
+    </defs>
+    <image href="/assets/ed%20caluag.jpg" x="0" y="0" width="126" height="120" preserveAspectRatio="xMidYMid slice" clip-path="url(#logo-circle)"/>
   </symbol>
 </svg>
 
@@ -321,7 +302,7 @@
           <div class="perk"><strong>7am–10pm</strong><span>Open daily</span></div>
         </div>
       </div>
-      <div class="hero-logo"><svg viewBox="0 0 126 120" role="img" aria-label="Hog & Mug logo: a pig holding a hot cup"><use href="#logo"/></svg></div>
+      <div class="hero-logo"><svg viewBox="0 0 126 120" role="img" aria-label="Hog & Mug logo featuring Ed Caluag"><use href="#logo"/></svg></div>
     </div>
   </section>
 
@@ -438,6 +419,8 @@
       <input id="regEmail" type="email" autocomplete="email" required>
       <label for="regPhone">Phone</label>
       <input id="regPhone" type="tel" autocomplete="tel" required>
+      <label for="regAddress">Address</label>
+      <input id="regAddress" autocomplete="street-address" placeholder="House/Unit, street, Barangay" required>
       <label for="regPass">Password</label>
       <input id="regPass" type="password" autocomplete="new-password" minlength="8" required>
       <div class="hint">At least 8 characters.</div>
@@ -748,7 +731,7 @@
     $("regErr").textContent = "";
     try {
       const user = await api("/api/auth/register", { method: "POST", body: {
-        name: $("regName").value, email: $("regEmail").value, phone: $("regPhone").value, password: $("regPass").value } });
+        name: $("regName").value, email: $("regEmail").value, phone: $("regPhone").value, address: $("regAddress").value, password: $("regPass").value } });
       loggedIn(user, `Account created. Welcome, ${user.name.split(" ")[0]}!`);
     } catch (err) { $("regErr").textContent = err.message; }
   };
