@@ -419,6 +419,8 @@
       <input id="regEmail" type="email" autocomplete="email" required>
       <label for="regPhone">Phone</label>
       <input id="regPhone" type="tel" autocomplete="tel" required>
+      <label for="regAddress">Address</label>
+      <input id="regAddress" autocomplete="street-address" placeholder="House/Unit, street, Barangay" required>
       <label for="regPass">Password</label>
       <input id="regPass" type="password" autocomplete="new-password" minlength="8" required>
       <div class="hint">At least 8 characters.</div>
@@ -729,7 +731,7 @@
     $("regErr").textContent = "";
     try {
       const user = await api("/api/auth/register", { method: "POST", body: {
-        name: $("regName").value, email: $("regEmail").value, phone: $("regPhone").value, password: $("regPass").value } });
+        name: $("regName").value, email: $("regEmail").value, phone: $("regPhone").value, address: $("regAddress").value, password: $("regPass").value } });
       loggedIn(user, `Account created. Welcome, ${user.name.split(" ")[0]}!`);
     } catch (err) { $("regErr").textContent = err.message; }
   };
