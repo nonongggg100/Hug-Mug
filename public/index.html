@@ -253,30 +253,22 @@
 <!-- Logo: pig holding a hot cup (reusable SVG symbol) -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="logo" viewBox="0 0 126 120">
-    <!-- steam -->
     <path d="M84 40c-4-5 4-8 0-14M93 40c-4-5 4-8 0-14M102 40c-4-5 4-8 0-14" fill="none" stroke="#f5e8c7" stroke-width="3" stroke-linecap="round"/>
-    <!-- ears -->
     <path d="M26 34 L22 12 L42 26 Z" fill="#ed641c"/>
     <path d="M66 26 L84 14 L78 36 Z" fill="#ed641c"/>
-    <!-- head -->
     <circle cx="52" cy="58" r="34" fill="#b8d83f"/>
-    <!-- cheeks -->
     <circle cx="30" cy="70" r="6" fill="#9bb925" opacity=".65"/>
-    <!-- eyes -->
     <circle cx="40" cy="50" r="4.5" fill="#7a310d"/>
     <circle cx="62" cy="50" r="4.5" fill="#7a310d"/>
     <circle cx="41.5" cy="48.5" r="1.4" fill="#fff"/>
     <circle cx="63.5" cy="48.5" r="1.4" fill="#fff"/>
-    <!-- snout -->
     <ellipse cx="51" cy="68" rx="14" ry="10" fill="#ed641c"/>
     <ellipse cx="46" cy="68" rx="2.6" ry="3.6" fill="#7a310d"/>
     <ellipse cx="56" cy="68" rx="2.6" ry="3.6" fill="#7a310d"/>
-    <!-- cup -->
     <path d="M110 70 q10 0 10 10 q0 10 -10 10" fill="none" stroke="#7a310d" stroke-width="5"/>
     <path d="M76 46 h36 l-4 50 q-1 6 -7 6 h-14 q-6 0 -7 -6 Z" fill="#7a310d"/>
     <rect x="74" y="42" width="40" height="7" rx="3.5" fill="#a94c1d"/>
     <path d="M82 66 h24" stroke="#b8d83f" stroke-width="4" stroke-linecap="round"/>
-    <!-- hoof holding cup -->
     <ellipse cx="78" cy="80" rx="9" ry="7" fill="#b8d83f" stroke="#ed641c" stroke-width="2"/>
   </symbol>
 </svg>
@@ -356,7 +348,6 @@
   </div>
 </footer>
 
-<!-- Cart drawer -->
 <div class="overlay" id="overlay"></div>
 <aside class="drawer" id="drawer" aria-label="Shopping cart">
   <div class="drawer-head">
@@ -374,7 +365,6 @@
   </div>
 </aside>
 
-<!-- Checkout modal -->
 <div class="modal" id="modal">
   <div class="modal-box" id="modalBox">
     <form id="orderForm">
@@ -409,7 +399,6 @@
   </div>
 </div>
 
-<!-- Login / Sign up modal -->
 <div class="modal" id="authModal">
   <div class="modal-box">
     <div class="auth-tabs">
@@ -438,6 +427,8 @@
       <input id="regEmail" type="email" autocomplete="email" required>
       <label for="regPhone">Phone</label>
       <input id="regPhone" type="tel" autocomplete="tel" required>
+      <label for="regAddress">Address</label>
+      <input id="regAddress" autocomplete="street-address" placeholder="House/Unit, street, Barangay" required>
       <label for="regPass">Password</label>
       <input id="regPass" type="password" autocomplete="new-password" minlength="8" required>
       <div class="hint">At least 8 characters.</div>
@@ -451,7 +442,6 @@
   </div>
 </div>
 
-<!-- My account modal -->
 <div class="modal" id="accountModal">
   <div class="modal-box">
     <h3>My account</h3>
@@ -499,7 +489,6 @@
   let activeCat = "All";
   let cartState = { items: [], count: 0, subtotal: 0, delivery: 0, total: 0 };
 
-  // ---- API helper ----
   async function api(path, options = {}) {
     let res;
     try {
@@ -511,7 +500,6 @@
         body: options.body ? JSON.stringify(options.body) : undefined,
       });
     } catch {
-      // Network-level failure (Safari: "Load failed", Chrome: "Failed to fetch")
       throw new Error(location.protocol === "file:"
         ? "Open the site through the server at http://localhost:3000, not the file directly."
         : "Can't reach the server. Check that it's running (node server.js) and try again.");
@@ -526,7 +514,6 @@
   const orderType = () => ($("method") ? $("method").value : "delivery");
   const q = () => "?method=" + orderType();
 
-  // ---- Menu ----
   function renderTabs() {
     const cats = ["All", ...new Set(MENU.map(m => m.cat))];
     $("tabs").innerHTML = cats.map(c => `<button class="tab${c === activeCat ? " active" : ""}" data-cat="${c}">${c}</button>`).join("");
@@ -553,7 +540,6 @@
       </article>`).join("");
   }
 
-  // Add to cart -> backend
   $("grid").addEventListener("click", async e => {
     const btn = e.target.closest(".add");
     if (!btn) return;
@@ -566,7 +552,6 @@
     btn.disabled = false;
   });
 
-  // ---- Cart ----
   function renderCart() {
     const c = cartState;
     $("badge").textContent = c.count;
@@ -600,14 +585,12 @@
     try { cartState = await api("/api/cart" + q()); renderCart(); } catch (err) { toast(err.message); }
   }
 
-  // ---- Drawer ----
   const openCart = () => { $("drawer").classList.add("show"); $("overlay").classList.add("show"); };
   const closeCart = () => { $("drawer").classList.remove("show"); $("overlay").classList.remove("show"); };
   $("openCart").onclick = openCart;
   $("closeCart").onclick = closeCart;
   $("overlay").onclick = closeCart;
 
-  // ---- Checkout -> backend ----
   const formHTML = $("modalBox").innerHTML;
   function bindForm() {
     $("method").onchange = () => {
@@ -648,7 +631,7 @@
         renderCart();
       } catch (err) {
         placeBtn.disabled = false; placeBtn.textContent = "Place order";
-        if (err.status === 401) { // session expired or logged out elsewhere
+        if (err.status === 401) {
           setUser(null);
           $("modal").classList.remove("show");
           openAuth("login", "Your session has ended. Please log in again to place your order.", openCheckout);
@@ -656,7 +639,7 @@
       }
     };
   }
-  // Checkout requires login
+
   function openCheckout() {
     closeCart();
     $("signedIn").innerHTML = `Ordering as <strong>${esc(currentUser.name)}</strong> (${esc(currentUser.email)})`;
@@ -671,7 +654,6 @@
     openAuth("login", "Please log in or create an account to place your order.", openCheckout);
   };
 
-  // Close any modal by clicking the backdrop or a [data-close] button
   document.querySelectorAll(".modal").forEach(m =>
     m.addEventListener("click", e => { if (e.target === m) m.classList.remove("show"); }));
   document.addEventListener("click", e => {
@@ -679,10 +661,9 @@
     if (id) $(id).classList.remove("show");
   });
 
-  // ---- Accounts ----
   let currentUser = null;
-  let afterLogin = null; // what to do once the user logs in (e.g. continue to checkout)
-  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+  let afterLogin = null;
+  const esc = s => String(s ?? "").replace(/[&<>\"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
 
   function setUser(user) {
     currentUser = user;
@@ -693,7 +674,6 @@
     $("acctMenu").classList.remove("show");
   }
 
-  // Sign up / log in entry points
   $("signupBtn").onclick = () => openAuth("register");
   document.addEventListener("click", e => {
     const a = e.target.closest("[data-auth]");
@@ -701,7 +681,7 @@
     const t = e.target.closest("[data-tab-link]");
     if (t) { e.preventDefault(); switchTab(t.dataset.tabLink); $("loginErr").textContent = $("regErr").textContent = ""; }
   });
-  // Direct links: http://localhost:3000/#signup or /#login
+
   function openFromHash() {
     if (currentUser) return;
     if (location.hash === "#signup" || location.hash === "#register") openAuth("register");
@@ -748,12 +728,11 @@
     $("regErr").textContent = "";
     try {
       const user = await api("/api/auth/register", { method: "POST", body: {
-        name: $("regName").value, email: $("regEmail").value, phone: $("regPhone").value, password: $("regPass").value } });
+        name: $("regName").value, email: $("regEmail").value, phone: $("regPhone").value, address: $("regAddress").value, password: $("regPass").value } });
       loggedIn(user, `Account created. Welcome, ${user.name.split(" ")[0]}!`);
     } catch (err) { $("regErr").textContent = err.message; }
   };
 
-  // Header account button / dropdown
   $("acctBtn").onclick = e => {
     e.stopPropagation();
     if (!currentUser) return openAuth("login");
@@ -767,14 +746,13 @@
     if (action === "logout") {
       await api("/api/auth/logout", { method: "POST" }).catch(() => {});
       setUser(null);
-      $("modalBox").innerHTML = formHTML; bindForm(); // clear checkout form
+      $("modalBox").innerHTML = formHTML; bindForm();
       toast("You've been logged out");
     } else {
       openAccount(action === "orders");
     }
   });
 
-  // My account modal
   async function openAccount(scrollToOrders = false) {
     try { const { user } = await api("/api/auth/me"); if (!user) { setUser(null); return openAuth("login", "Please log in again."); } setUser(user); } catch {}
     $("accName").value = currentUser.name;
@@ -818,7 +796,6 @@
     } catch (err) { $("passErr").textContent = err.message; }
   };
 
-  // ---- Toast ----
   let toastTimer;
   function toast(msg) {
     $("toast").textContent = msg;
@@ -827,7 +804,6 @@
     toastTimer = setTimeout(() => $("toast").classList.remove("show"), 2000);
   }
 
-  // ---- Init ----
   $("year").textContent = new Date().getFullYear();
   bindForm();
   (async () => {
