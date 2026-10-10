@@ -252,8 +252,13 @@
 
 <!-- Logo image (reusable SVG symbol) -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <clipPath id="logo-circle">
+      <circle cx="63" cy="60" r="60"/>
+    </clipPath>
+  </defs>
   <symbol id="logo" viewBox="0 0 126 120">
-    <image href="./assets/ed%20caluag.jpg" x="0" y="0" width="126" height="120" preserveAspectRatio="xMidYMid slice"/>
+    <image href="./assets/ed%20caluag.jpg" x="0" y="0" width="126" height="120" preserveAspectRatio="xMidYMid slice" clip-path="url(#logo-circle)"/>
   </symbol>
 </svg>
 
